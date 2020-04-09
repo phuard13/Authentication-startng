@@ -1,4 +1,5 @@
 <?php session_start(); 
+      require_once('functions/user.php');
 
 
 // data collection
@@ -32,17 +33,17 @@ if($errorCount > 0){
      $_SESSION["error"] = $session_error ;
   
       header("Location: register.php");
-   
+
 }else{
+
       // count all users
       //  assign ID to user
       // assign id to the  new user
-      $allUsers =  scandir("db/users/");
-      $countAllUsers = count($allUsers);
-     
+
+
       $newUserId = ($countAllUsers-1);
 
-   $userObject = [
+      $userObject = [
      'id' =>$newUserId,
      'first_name' =>$first_name,
      'last_name' =>$last_name,
@@ -57,24 +58,21 @@ if($errorCount > 0){
   //  check if user already exist in the file system below we had to change $first_name,$last_name and use email instead
   // Also to check if the allUsers array and check if email already exist
    
-     for ($counter = 0; $counter < $countAllUsers ; $counter++){
+      $userExists =  find_user($email); 
 
-       $currentUser = $allUsers[$counter];
-
-       if($currentUser == $email . ".json" ){
-
+       if($userExists){
         $_SESSION["error"] = "User already exist ";
 
         header("Location: register.php");
+        
+        die();
 
-        dir();
-
-         }
-
-        }
+         }   
+         
+         
 
   // save to the databse
-  file_put_contents("db/users/". $email . ".json", json_encode($userObject));
+  save_user($userObject);
   $_SESSION["message"] = "Registration Successful, Login " . $first_name;
   header("Location: login.php");
   }

@@ -1,30 +1,25 @@
-<?php session_start();
+<?php include_once('lib/header.php'); 
+      require_once('functions/alert.php');
 
-include_once('lib/header.php'); 
-
-?>
-
-
-  <h3>Login</h3>
-    <p>
+if(isset($_SESSION['loggedIn']) && !empty($_SESSION['loggedIn'])){
+  // redirect to  dashboard
+  header("location: dashboard.php");
+}
+?> <p>
        <?php
-          if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
-            echo "<span style ='color:green'>" . $_SESSION['message'] ."<span>";
+          if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
+            echo "<span style ='color:red'>" . $_SESSION['error'] ."<span>";
             session_destroy();
           }
         ?>
       </p>
-        <form action="processlogin.php" method="POST">
-   <p>
-        <?php
-          if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
-            echo "<span style ='color:red'>" . $_SESSION['error'] ."<span>";
 
-            // session_unset();
-        
-          }
-        ?>
-   </p>
+  <h3>Login</h3>
+    <p>
+       <?php print_alert();?>
+      </p>
+        <form action="processlogin.php" method="POST">
+   
    <p>
     <label for="email">Email</label><br>
     <input 

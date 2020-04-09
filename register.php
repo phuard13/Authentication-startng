@@ -1,5 +1,11 @@
-<?php session_start();
-  
+<?php include_once('lib/header.php'); 
+      require_once('functions/alert.php');
+
+  if(isset($_SESSION['loggedIn']) && !empty($_SESSION['loggedIn'])){
+    // redirect to  dashboard
+    header("location: dashboard.php");
+  }
+
 include_once('lib/header.php'); 
 ?>
   <h3>Register</h3>
@@ -10,12 +16,7 @@ include_once('lib/header.php');
    <form action="processregister.php" method="POST">
    <p>
         <?php
-          if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
-            echo "<span style ='color:red'>" . $_SESSION['error'] . "</span>";
-
-            // session_unset();
-            session_destroy();
-          }
+          print_alert();
         ?>
    </p>
    <p>
